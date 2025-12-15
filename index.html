@@ -1,0 +1,677 @@
+<style>
+    .ll-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .ll-header {
+        background-color: white;
+        padding: 30px 0;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .ll-h1 {
+        color: #1b8be0;
+        font-size: 2.5em;
+        margin-bottom: 10px;
+    }
+
+    .ll-tagline {
+        color: #666;
+        font-size: 1.1em;
+        margin-bottom: 15px;
+    }
+
+    .ll-intro {
+        color: #666;
+        font-size: 1em;
+        line-height: 1.6;
+        max-width: 800px;
+    }
+
+    .ll-search-filter-section {
+        background: white;
+        padding: 25px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .ll-search-bar {
+        width: 100%;
+        padding: 15px;
+        font-size: 16px;
+        border: 2px solid #ddd;
+        border-radius: 6px;
+        margin-bottom: 15px;
+        transition: border-color 0.3s;
+    }
+
+    .ll-search-bar:focus {
+        outline: none;
+        border-color: #1b8be0;
+    }
+
+    .ll-filters {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .ll-filter-group {
+        flex: 1;
+        min-width: 200px;
+    }
+
+    .ll-filter-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 500;
+        color: #555;
+    }
+
+    .ll-filter-group select {
+        width: 100%;
+        padding: 10px;
+        border: 2px solid #ddd;
+        border-radius: 6px;
+        font-size: 14px;
+        background: white;
+        cursor: pointer;
+    }
+
+    .ll-items-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 25px;
+        margin-bottom: 40px;
+    }
+
+    .ll-item-card {
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        transition: transform 0.2s, box-shadow 0.2s;
+        cursor: pointer;
+    }
+
+    .ll-item-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .ll-item-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        background-color: #f0f0f0;
+    }
+
+    .ll-item-content {
+        padding: 20px;
+    }
+
+    .ll-item-name {
+        font-size: 1.3em;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 8px;
+    }
+
+    .ll-category-badge {
+        display: inline-block;
+        background-color: #1b8be0;
+        color: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.85em;
+        margin-bottom: 10px;
+    }
+
+    .ll-item-description {
+        color: #666;
+        font-size: 0.95em;
+        margin-bottom: 12px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .ll-item-location {
+        color: #888;
+        font-size: 0.9em;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .ll-location-icon {
+        width: 16px;
+        height: 16px;
+    }
+
+    .ll-loading {
+        text-align: center;
+        padding: 60px 20px;
+        color: #666;
+        font-size: 1.2em;
+    }
+
+    .ll-no-results {
+        text-align: center;
+        padding: 60px 20px;
+        color: #666;
+    }
+
+    .ll-no-results h2 {
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .ll-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+        z-index: 1000;
+        overflow-y: auto;
+    }
+
+    .ll-modal.active {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .ll-modal-content {
+        background: white;
+        border-radius: 12px;
+        max-width: 800px;
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+        position: relative;
+    }
+
+    .ll-modal-image {
+        width: 100%;
+        max-height: 400px;
+        object-fit: cover;
+    }
+
+    .ll-modal-body {
+        padding: 30px;
+    }
+
+    .ll-close-modal {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: white;
+        border: none;
+        font-size: 30px;
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        z-index: 10;
+    }
+
+    .ll-close-modal:hover {
+        background-color: #f0f0f0;
+    }
+
+    .ll-modal-title {
+        font-size: 2em;
+        color: #333;
+        margin-bottom: 15px;
+    }
+
+    .ll-modal-description {
+        color: #666;
+        font-size: 1.1em;
+        line-height: 1.8;
+        margin-bottom: 20px;
+    }
+
+    .ll-modal-section {
+        margin-bottom: 25px;
+    }
+
+    .ll-modal-section h3 {
+        color: #1b8be0;
+        font-size: 1.1em;
+        margin-bottom: 10px;
+    }
+
+    .ll-modal-section p {
+        color: #666;
+        line-height: 1.7;
+    }
+
+    .ll-modal-section a {
+        color: #1b8be0;
+        text-decoration: none;
+    }
+
+    .ll-modal-section a:hover {
+        text-decoration: underline;
+    }
+
+    .ll-request-button {
+        background-color: #1b8be0;
+        color: white;
+        border: none;
+        padding: 15px 40px;
+        font-size: 1.1em;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        width: 100%;
+        font-weight: 600;
+    }
+
+    .ll-request-button:hover {
+        background-color: #1577c7;
+    }
+
+    .ll-form-group {
+        margin-bottom: 20px;
+    }
+
+    .ll-form-group label {
+        display: block;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 8px;
+    }
+
+    .ll-form-group input,
+    .ll-form-group textarea {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #ddd;
+        border-radius: 6px;
+        font-size: 14px;
+        font-family: inherit;
+        transition: border-color 0.3s;
+    }
+
+    .ll-form-group input:focus,
+    .ll-form-group textarea:focus {
+        outline: none;
+        border-color: #1b8be0;
+    }
+
+    .ll-form-group textarea {
+        resize: vertical;
+    }
+
+    @media (max-width: 768px) {
+        .ll-h1 {
+            font-size: 2em;
+        }
+
+        .ll-filters {
+            flex-direction: column;
+        }
+
+        .ll-items-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<div class="ll-header">
+    <div class="ll-container">
+        <h1 class="ll-h1">DRCA Lending Library</h1>
+        <p class="ll-tagline">Borrow tools and items from your Del Ray neighbors</p>
+        <p class="ll-intro">The DRCA Lending Library connects neighbors and helps meet each other's needs. Browse available items below, or <a href="https://forms.gle/gW78HfbavvZQK5Yv7" target="_blank" style="color: #1b8be0; text-decoration: none;">add your own items</a> to share with the community. Questions? Email <a href="mailto:vp@delraycitizen.net" style="color: #1b8be0; text-decoration: none;">vp@delraycitizen.net</a></p>
+    </div>
+</div>
+
+<div class="ll-container">
+    <div class="ll-search-filter-section">
+        <input 
+            type="text" 
+            class="ll-search-bar" 
+            id="llSearchInput" 
+            placeholder="What do you need? (e.g., ladder, camping gear, pressure washer)"
+        >
+        
+        <div class="ll-filters">
+            <div class="ll-filter-group">
+                <label for="llCategoryFilter">Category</label>
+                <select id="llCategoryFilter">
+                    <option value="">All Categories</option>
+                    <option value="Tools, Ladders & Equipment">Tools, Ladders & Equipment</option>
+                    <option value="Yard & Garden">Yard & Garden</option>
+                    <option value="Camping & Outdoor">Camping & Outdoor</option>
+                    <option value="Party & Events">Party & Events</option>
+                    <option value="Home & Cleaning">Home & Cleaning</option>
+                    <option value="Kids & Pets">Kids & Pets</option>
+                    <option value="Sports & Recreation">Sports & Recreation</option>
+                    <option value="Hobbies & Crafts">Hobbies & Crafts</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div id="llItemsContainer" class="ll-items-grid">
+        <div class="ll-loading">Loading items from the lending library...</div>
+    </div>
+</div>
+
+<div id="llItemModal" class="ll-modal">
+    <div class="ll-modal-content">
+        <button class="ll-close-modal" onclick="llCloseModal()">&times;</button>
+        <img id="llModalImage" class="ll-modal-image" src="" alt="">
+        <div class="ll-modal-body">
+            <h2 id="llModalTitle" class="ll-modal-title"></h2>
+            <span id="llModalCategory" class="ll-category-badge"></span>
+            <p id="llModalDescription" class="ll-modal-description"></p>
+            
+            <div class="ll-modal-section" id="llProductLinkSection" style="display: none;">
+                <h3>Product Information</h3>
+                <p><a id="llModalProductLink" href="" target="_blank">View detailed specs online</a></p>
+            </div>
+            
+            <div class="ll-modal-section" id="llNotesSection" style="display: none;">
+                <h3>Notes & Instructions</h3>
+                <p id="llModalNotes"></p>
+            </div>
+            
+            <div class="ll-modal-section">
+                <h3>Location</h3>
+                <p id="llModalLocation"></p>
+            </div>
+            
+            <button class="ll-request-button" onclick="llRequestItem()">Request This Item</button>
+        </div>
+    </div>
+</div>
+
+<!-- Request Form Modal -->
+<div id="llRequestFormModal" class="ll-modal">
+    <div class="ll-modal-content">
+        <button class="ll-close-modal" onclick="llCloseRequestForm()">&times;</button>
+        <div class="ll-modal-body">
+            <h2 class="ll-modal-title">Request to Borrow</h2>
+            <p style="color: #666; margin-bottom: 20px;">Fill out this form and we'll connect you with the owner.</p>
+            
+            <form id="llRequestForm" onsubmit="llSubmitRequest(event)">
+                <input type="hidden" id="llRequestItemName" name="itemName">
+                
+                <div class="ll-form-group">
+                    <label for="llBorrowerName">Your Name *</label>
+                    <input type="text" id="llBorrowerName" name="borrowerName" required>
+                </div>
+                
+                <div class="ll-form-group">
+                    <label for="llBorrowerEmail">Your Email *</label>
+                    <input type="email" id="llBorrowerEmail" name="borrowerEmail" required>
+                </div>
+                
+                <div class="ll-form-group">
+                    <label for="llBorrowerPhone">Your Phone *</label>
+                    <input type="tel" id="llBorrowerPhone" name="borrowerPhone" required>
+                </div>
+                
+                <div class="ll-form-group">
+                    <label for="llWhenNeeded">When do you need it?</label>
+                    <textarea id="llWhenNeeded" name="whenNeeded" rows="2" placeholder="e.g., This weekend, Dec 20-23, Anytime next week"></textarea>
+                </div>
+                
+                <div class="ll-form-group">
+                    <label for="llWhenReturning">When can you return it?</label>
+                    <textarea id="llWhenReturning" name="whenReturning" rows="2" placeholder="e.g., Sunday evening, By end of month, Anytime after Monday"></textarea>
+                </div>
+                
+                <div class="ll-form-group">
+                    <label for="llMessage">Message to owner (optional)</label>
+                    <textarea id="llMessage" name="message" rows="3" placeholder="Any questions or special requests?"></textarea>
+                </div>
+                
+                <button type="submit" class="ll-request-button" id="llSubmitButton">Send Request</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // Google Sheet ID and GID
+        const SHEET_ID = '1psqVu7RcHRBlLoqgICNRzZeNm7lMA3WoMtpfJDKBQns';
+        const GID = '1295438652';
+        
+        let llAllItems = [];
+        let llCurrentItem = null;
+
+        async function llFetchItems() {
+            try {
+                const url = 'https://script.google.com/macros/s/AKfycbxNu-Rj8bJARt0C6AhLydoFyy_VV_Zx9wxrvfbvjCp0b9Pny5ZUlVuDxFgZy63EEA-2Ww/exec';
+                const response = await fetch(url);
+                const rawItems = await response.json();
+                
+                // Clean up category names - extract just the part before any parentheses
+                llAllItems = rawItems.map(item => ({
+                    ...item,
+                    category: item.category ? item.category.split('(')[0].trim() : item.category
+                })).filter(item => item.itemName);
+
+                llDisplayItems(llAllItems);
+            } catch (error) {
+                console.error('Error fetching items:', error);
+                document.getElementById('llItemsContainer').innerHTML = `
+                    <div class="ll-no-results">
+                        <h2>Unable to load items</h2>
+                        <p>Please try refreshing the page. Error: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        function llParseCSVLine(line) {
+            // No longer needed, keeping for compatibility
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+            
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                    result.push(current.trim());
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            result.push(current.trim());
+            
+            return result.map(v => v.replace(/^"|"$/g, ''));
+        }
+
+        function llGetImageUrl(photoUrl) {
+            // If no photo URL or it's empty, return a simple placeholder
+            if (!photoUrl || photoUrl.trim() === '') {
+                return 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200"%3E%3Crect width="300" height="200" fill="%23f0f0f0"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="%23999"%3ENo Image%3C/text%3E%3C/svg%3E';
+            }
+            return photoUrl;
+        }
+
+        function llDisplayItems(items) {
+            const container = document.getElementById('llItemsContainer');
+            
+            if (items.length === 0) {
+                container.innerHTML = `
+                    <div class="ll-no-results">
+                        <h2>No items found</h2>
+                        <p>Try adjusting your search or filters.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = items.map(item => `
+                <div class="ll-item-card" onclick='llOpenModal(${JSON.stringify(item).replace(/'/g, "&#39;")})'>
+                    <img class="ll-item-image" src="${llGetImageUrl(item.photoUrl)}" 
+                         alt="${item.itemName}"
+                         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22200%22 viewBox=%220 0 300 200%22%3E%3Crect width=%22300%22 height=%22200%22 fill=%22%23f0f0f0%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Arial, sans-serif%22 font-size=%2218%22 fill=%22%23999%22%3ENo Image%3C/text%3E%3C/svg%3E'">
+                    <div class="ll-item-content">
+                        <h3 class="ll-item-name">${item.itemName}</h3>
+                        <span class="ll-category-badge">${item.category}</span>
+                        <p class="ll-item-description">${item.description}</p>
+                        <div class="ll-item-location">
+                            <svg class="ll-location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            <span>${item.landmark}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function llFilterItems() {
+            const searchTerm = document.getElementById('llSearchInput').value.toLowerCase();
+            const categoryFilter = document.getElementById('llCategoryFilter').value;
+
+            const filtered = llAllItems.filter(item => {
+                const matchesSearch = !searchTerm || 
+                    item.itemName.toLowerCase().includes(searchTerm) ||
+                    item.description.toLowerCase().includes(searchTerm) ||
+                    item.notes.toLowerCase().includes(searchTerm);
+                
+                const matchesCategory = !categoryFilter || item.category === categoryFilter;
+
+                return matchesSearch && matchesCategory;
+            });
+
+            llDisplayItems(filtered);
+        }
+
+        window.llOpenModal = function(item) {
+            llCurrentItem = item;
+            
+            document.getElementById('llModalImage').src = llGetImageUrl(item.photoUrl);
+            document.getElementById('llModalTitle').textContent = item.itemName;
+            document.getElementById('llModalCategory').textContent = item.category;
+            document.getElementById('llModalDescription').textContent = item.description;
+            document.getElementById('llModalLocation').textContent = item.landmark;
+            
+            if (item.productLink) {
+                document.getElementById('llProductLinkSection').style.display = 'block';
+                document.getElementById('llModalProductLink').href = item.productLink;
+            } else {
+                document.getElementById('llProductLinkSection').style.display = 'none';
+            }
+            
+            if (item.notes) {
+                document.getElementById('llNotesSection').style.display = 'block';
+                document.getElementById('llModalNotes').textContent = item.notes;
+            } else {
+                document.getElementById('llNotesSection').style.display = 'none';
+            }
+            
+            document.getElementById('llItemModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        window.llCloseModal = function() {
+            document.getElementById('llItemModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        window.llCloseRequestForm = function() {
+            document.getElementById('llRequestFormModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+            document.getElementById('llRequestForm').reset();
+        }
+
+        window.llSubmitRequest = async function(event) {
+            event.preventDefault();
+            
+            const submitButton = document.getElementById('llSubmitButton');
+            submitButton.disabled = true;
+            submitButton.textContent = 'Sending...';
+            
+            const formData = {
+                itemName: document.getElementById('llRequestItemName').value,
+                borrowerName: document.getElementById('llBorrowerName').value,
+                borrowerEmail: document.getElementById('llBorrowerEmail').value,
+                borrowerPhone: document.getElementById('llBorrowerPhone').value,
+                whenNeeded: document.getElementById('llWhenNeeded').value,
+                whenReturning: document.getElementById('llWhenReturning').value,
+                message: document.getElementById('llMessage').value,
+                ownerName: llCurrentItem.ownerName,
+                ownerEmail: llCurrentItem.ownerEmail,
+                ownerPhone: llCurrentItem.ownerPhone,
+                ownerContactPreference: llCurrentItem.contactPreference,
+                landmark: llCurrentItem.landmark
+            };
+            
+            try {
+                // Send to Google Apps Script endpoint that will handle email and logging
+                const response = await fetch('https://script.google.com/macros/s/AKfycbxNu-Rj8bJARt0C6AhLydoFyy_VV_Zx9wxrvfbvjCp0b9Pny5ZUlVuDxFgZy63EEA-2Ww/exec', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                if (response.ok) {
+                    alert('Request sent! The owner will contact you soon.');
+                    llCloseRequestForm();
+                } else {
+                    throw new Error('Failed to send request');
+                }
+            } catch (error) {
+                console.error('Error sending request:', error);
+                alert('There was an error sending your request. Please email vp@delraycitizen.net directly.');
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Send Request';
+            }
+        }
+
+        window.llRequestItem = function() {
+            // Hide the item detail modal
+            document.getElementById('llItemModal').classList.remove('active');
+            
+            // Show the request form modal
+            document.getElementById('llRequestFormModal').classList.add('active');
+            
+            // Pre-fill the item name
+            document.getElementById('llRequestItemName').value = llCurrentItem.itemName;
+        }
+
+        document.getElementById('llItemModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                llCloseModal();
+            }
+        });
+
+        document.getElementById('llSearchInput').addEventListener('input', llFilterItems);
+        document.getElementById('llCategoryFilter').addEventListener('change', llFilterItems);
+
+        llFetchItems();
+    })();
+</script>

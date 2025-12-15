@@ -406,22 +406,6 @@
 
 <script>
     (function() {
-        // Password protection
-        const correctPassword = 'drca2025'; // Change this to whatever password you want
-        let authenticated = sessionStorage.getItem('llAuthenticated') === 'true';
-        
-        if (!authenticated) {
-            const password = prompt('This page is for DRCA members only. Please enter the password:');
-            if (password === correctPassword) {
-                sessionStorage.setItem('llAuthenticated', 'true');
-                authenticated = true;
-            } else {
-                alert('Incorrect password. Please contact vp@delraycitizen.net for access.');
-                document.body.innerHTML = '<div style="text-align: center; padding: 50px; font-family: Arial;">Access Denied</div>';
-                throw new Error('Authentication failed');
-            }
-        }
-        
         // Google Sheet ID and GID
         const SHEET_ID = '1psqVu7RcHRBlLoqgICNRzZeNm7lMA3WoMtpfJDKBQns';
         const GID = '1295438652';
@@ -566,8 +550,6 @@
         window.llCloseModal = function() {
             document.getElementById('llItemModal').classList.remove('active');
             document.body.style.overflow = 'auto';
-        }
-
         }
 
         window.llRequestItem = function() {

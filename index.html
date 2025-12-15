@@ -404,55 +404,24 @@
     </div>
 </div>
 
-<!-- Request Form Modal -->
-<div id="llRequestFormModal" class="ll-modal">
-    <div class="ll-modal-content">
-        <button class="ll-close-modal" onclick="llCloseRequestForm()">&times;</button>
-        <div class="ll-modal-body">
-            <h2 class="ll-modal-title">Request to Borrow</h2>
-            <p style="color: #666; margin-bottom: 20px;">Fill out this form and we'll connect you with the owner.</p>
-            
-            <form id="llRequestForm" onsubmit="llSubmitRequest(event)">
-                <input type="hidden" id="llRequestItemName" name="itemName">
-                
-                <div class="ll-form-group">
-                    <label for="llBorrowerName">Your Name *</label>
-                    <input type="text" id="llBorrowerName" name="borrowerName" required>
-                </div>
-                
-                <div class="ll-form-group">
-                    <label for="llBorrowerEmail">Your Email *</label>
-                    <input type="email" id="llBorrowerEmail" name="borrowerEmail" required>
-                </div>
-                
-                <div class="ll-form-group">
-                    <label for="llBorrowerPhone">Your Phone *</label>
-                    <input type="tel" id="llBorrowerPhone" name="borrowerPhone" required>
-                </div>
-                
-                <div class="ll-form-group">
-                    <label for="llWhenNeeded">When do you need it?</label>
-                    <textarea id="llWhenNeeded" name="whenNeeded" rows="2" placeholder="e.g., This weekend, Dec 20-23, Anytime next week"></textarea>
-                </div>
-                
-                <div class="ll-form-group">
-                    <label for="llWhenReturning">When can you return it?</label>
-                    <textarea id="llWhenReturning" name="whenReturning" rows="2" placeholder="e.g., Sunday evening, By end of month, Anytime after Monday"></textarea>
-                </div>
-                
-                <div class="ll-form-group">
-                    <label for="llMessage">Message to owner (optional)</label>
-                    <textarea id="llMessage" name="message" rows="3" placeholder="Any questions or special requests?"></textarea>
-                </div>
-                
-                <button type="submit" class="ll-request-button" id="llSubmitButton">Send Request</button>
-            </form>
-        </div>
-    </div>
-</div>
-
 <script>
     (function() {
+        // Password protection
+        const correctPassword = 'drca2025'; // Change this to whatever password you want
+        let authenticated = sessionStorage.getItem('llAuthenticated') === 'true';
+        
+        if (!authenticated) {
+            const password = prompt('This page is for DRCA members only. Please enter the password:');
+            if (password === correctPassword) {
+                sessionStorage.setItem('llAuthenticated', 'true');
+                authenticated = true;
+            } else {
+                alert('Incorrect password. Please contact vp@delraycitizen.net for access.');
+                document.body.innerHTML = '<div style="text-align: center; padding: 50px; font-family: Arial;">Access Denied</div>';
+                throw new Error('Authentication failed');
+            }
+        }
+        
         // Google Sheet ID and GID
         const SHEET_ID = '1psqVu7RcHRBlLoqgICNRzZeNm7lMA3WoMtpfJDKBQns';
         const GID = '1295438652';
@@ -599,68 +568,18 @@
             document.body.style.overflow = 'auto';
         }
 
-        window.llCloseRequestForm = function() {
-            document.getElementById('llRequestFormModal').classList.remove('active');
-            document.body.style.overflow = 'auto';
-            document.getElementById('llRequestForm').reset();
-        }
-
-        window.llSubmitRequest = async function(event) {
-            event.preventDefault();
-            
-            const submitButton = document.getElementById('llSubmitButton');
-            submitButton.disabled = true;
-            submitButton.textContent = 'Sending...';
-            
-            const formData = {
-                itemName: document.getElementById('llRequestItemName').value,
-                borrowerName: document.getElementById('llBorrowerName').value,
-                borrowerEmail: document.getElementById('llBorrowerEmail').value,
-                borrowerPhone: document.getElementById('llBorrowerPhone').value,
-                whenNeeded: document.getElementById('llWhenNeeded').value,
-                whenReturning: document.getElementById('llWhenReturning').value,
-                message: document.getElementById('llMessage').value,
-                ownerName: llCurrentItem.ownerName,
-                ownerEmail: llCurrentItem.ownerEmail,
-                ownerPhone: llCurrentItem.ownerPhone,
-                ownerContactPreference: llCurrentItem.contactPreference,
-                landmark: llCurrentItem.landmark
-            };
-            
-            try {
-                // Send to Google Apps Script endpoint that will handle email and logging
-                const response = await fetch('https://script.google.com/macros/s/AKfycbxNu-Rj8bJARt0C6AhLydoFyy_VV_Zx9wxrvfbvjCp0b9Pny5ZUlVuDxFgZy63EEA-2Ww/exec', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData)
-                });
-                
-                if (response.ok) {
-                    alert('Request sent! The owner will contact you soon.');
-                    llCloseRequestForm();
-                } else {
-                    throw new Error('Failed to send request');
-                }
-            } catch (error) {
-                console.error('Error sending request:', error);
-                alert('There was an error sending your request. Please email vp@delraycitizen.net directly.');
-            } finally {
-                submitButton.disabled = false;
-                submitButton.textContent = 'Send Request';
-            }
         }
 
         window.llRequestItem = function() {
-            // Hide the item detail modal
-            document.getElementById('llItemModal').classList.remove('active');
+            // Pre-fill the Google Form with the item name
+            const itemName = encodeURIComponent(llCurrentItem.itemName);
+            const formUrl = `https://docs.google.com/forms/d/e/1FAIpQLSdfHP0S5pFMlWqcNYECkiBVyX96JcMcei0RKWh4Jbpu7HKXwQ/viewform?usp=pp_url&entry.1496792787=${itemName}`;
             
-            // Show the request form modal
-            document.getElementById('llRequestFormModal').classList.add('active');
+            // Open the form in a new tab
+            window.open(formUrl, '_blank');
             
-            // Pre-fill the item name
-            document.getElementById('llRequestItemName').value = llCurrentItem.itemName;
+            // Close the item detail modal
+            llCloseModal();
         }
 
         document.getElementById('llItemModal').addEventListener('click', function(e) {

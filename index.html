@@ -13,22 +13,49 @@
     }
 
     .ll-h1 {
-        color: #1b8be0;
+        color: #0A3254;
         font-size: 2.5em;
-        margin-bottom: 10px;
+        margin-bottom: 5px;
     }
 
     .ll-tagline {
-        color: #666;
-        font-size: 1.1em;
+        color: #0A3254;
+        font-size: 1.2em;
         margin-bottom: 15px;
+        font-weight: 500;
     }
 
     .ll-intro {
         color: #666;
-        font-size: 1em;
-        line-height: 1.6;
-        max-width: 800px;
+        font-size: 1.05em;
+        line-height: 1.7;
+        max-width: 900px;
+    }
+
+    .ll-intro a {
+        color: #0A3254;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .ll-intro a:hover {
+        text-decoration: underline;
+    }
+
+    .ll-header-content {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .ll-logo {
+        width: 120px;
+        height: auto;
+    }
+
+    .ll-header-text {
+        flex: 1;
     }
 
     .ll-search-filter-section {
@@ -51,7 +78,7 @@
 
     .ll-search-bar:focus {
         outline: none;
-        border-color: #1b8be0;
+        border-color: #0A3254;
     }
 
     .ll-filters {
@@ -123,7 +150,7 @@
 
     .ll-category-badge {
         display: inline-block;
-        background-color: #1b8be0;
+        background-color: #0A3254;
         color: white;
         padding: 4px 12px;
         border-radius: 20px;
@@ -251,7 +278,7 @@
     }
 
     .ll-modal-section h3 {
-        color: #1b8be0;
+        color: #0A3254;
         font-size: 1.1em;
         margin-bottom: 10px;
     }
@@ -262,7 +289,7 @@
     }
 
     .ll-modal-section a {
-        color: #1b8be0;
+        color: #0A3254;
         text-decoration: none;
     }
 
@@ -271,7 +298,7 @@
     }
 
     .ll-request-button {
-        background-color: #1b8be0;
+        background-color: #0A3254;
         color: white;
         border: none;
         padding: 15px 40px;
@@ -284,7 +311,7 @@
     }
 
     .ll-request-button:hover {
-        background-color: #1577c7;
+        background-color: #062139;
     }
 
     .ll-form-group {
@@ -312,7 +339,7 @@
     .ll-form-group input:focus,
     .ll-form-group textarea:focus {
         outline: none;
-        border-color: #1b8be0;
+        border-color: #0A3254;
     }
 
     .ll-form-group textarea {
@@ -336,9 +363,14 @@
 
 <div class="ll-header">
     <div class="ll-container">
-        <h1 class="ll-h1">DRCA Lending Library</h1>
-        <p class="ll-tagline">Borrow tools and items from your Del Ray neighbors</p>
-        <p class="ll-intro">The DRCA Lending Library connects neighbors and helps meet each other's needs. Browse available items below, or <a href="https://forms.gle/gW78HfbavvZQK5Yv7" target="_blank" style="color: #1b8be0; text-decoration: none;">add your own items</a> to share with the community. Questions? Email <a href="mailto:vp@delraycitizen.net" style="color: #1b8be0; text-decoration: none;">vp@delraycitizen.net</a></p>
+        <div class="ll-header-content">
+            <img src="https://raw.githubusercontent.com/elenah77/DRCALending/main/logo.png" alt="DRCA Logo" class="ll-logo">
+            <div class="ll-header-text">
+                <h1 class="ll-h1">DRCA Lending Library</h1>
+                <p class="ll-tagline">Bringing Neighbors Together</p>
+            </div>
+        </div>
+        <p class="ll-intro">Part of the DRCA's mission is to bring neighbors together, and we can't think of a better way than helping neighbors share and lend what they have to one another. Our lending library helps Del Ray residents buy less, get more use out of what we own, and strengthen the bonds that make our community so special. Browse available items below, or <a href="https://forms.gle/gW78HfbavvZQK5Yv7" target="_blank">add your own items</a> to share with neighbors. Questions? Email <a href="mailto:vp@delraycitizen.net">vp@delraycitizen.net</a></p>
     </div>
 </div>
 

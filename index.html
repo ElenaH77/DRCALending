@@ -26,19 +26,21 @@
     }
 
     .ll-intro {
-        color: #333;
-        font-size: 1.05em;
-        line-height: 1.7;
+        color: #222;
+        font-size: 1.1em;
+        line-height: 1.8;
         max-width: 900px;
+        font-weight: 400;
     }
 
     .ll-intro a {
         color: #0A3254;
-        text-decoration: none;
-        font-weight: 500;
+        text-decoration: underline;
+        font-weight: 700;
     }
 
     .ll-intro a:hover {
+        color: #062139;
         text-decoration: underline;
     }
 
@@ -348,21 +350,24 @@
 
     @media (max-width: 768px) {
         .ll-h1 {
-            font-size: 1.8em;
+            font-size: 2em;
+            font-weight: 700;
         }
 
         .ll-tagline {
-            font-size: 1.1em;
+            font-size: 1.2em;
+            font-weight: 600;
         }
 
         .ll-intro {
-            font-size: 1.1em;
-            line-height: 1.8;
-            color: #333;
+            font-size: 1.15em;
+            line-height: 1.9;
+            color: #000;
+            font-weight: 500;
         }
 
         .ll-logo {
-            width: 80px;
+            width: 90px;
         }
 
         .ll-header-content {
@@ -370,28 +375,33 @@
         }
 
         .ll-header {
-            padding: 20px 0;
+            padding: 25px 15px;
+        }
+
+        .ll-container {
+            padding: 0 15px;
         }
 
         .ll-search-bar {
-            font-size: 16px;
-            padding: 16px;
+            font-size: 17px;
+            padding: 18px;
         }
 
         .ll-filter-group select {
-            font-size: 16px;
-            padding: 14px;
-            min-height: 48px;
+            font-size: 17px;
+            padding: 16px;
+            min-height: 52px;
         }
 
         .ll-filter-group label {
-            font-size: 1em;
-            font-weight: 600;
-            color: #333;
+            font-size: 1.1em;
+            font-weight: 700;
+            color: #000;
         }
 
         .ll-filters {
             flex-direction: column;
+            gap: 20px;
         }
 
         .ll-items-grid {
@@ -399,16 +409,18 @@
         }
 
         .ll-item-name {
-            font-size: 1.4em;
+            font-size: 1.5em;
+            font-weight: 700;
         }
 
         .ll-item-description {
-            font-size: 1em;
+            font-size: 1.05em;
+            color: #444;
         }
 
         .ll-category-badge {
-            font-size: 0.9em;
-            padding: 5px 14px;
+            font-size: 0.95em;
+            padding: 6px 16px;
         }
     }
 </style>

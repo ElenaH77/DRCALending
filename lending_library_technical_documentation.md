@@ -145,4 +145,4 @@ The DRCA Lending Library is a web-based tool and item sharing platform built usi
 - Platform-agnostic version for other community associations
 
 ## Contact
-Questions: lendinglibrary@delraycitizen.org
+Questions: drcalending@gmail.com

@@ -1,0 +1,759 @@
+<style>
+    .ll-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .ll-header {
+        background-color: white;
+        padding: 30px 0;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .ll-h1 {
+        color: #0A3254;
+        font-size: 2.5em;
+        margin-bottom: 5px;
+    }
+
+    .ll-tagline {
+        color: #0A3254;
+        font-size: 1.2em;
+        margin-bottom: 15px;
+        font-weight: 500;
+    }
+
+    .ll-intro {
+        color: #222;
+        font-size: 1.1em;
+        line-height: 1.8;
+        max-width: 900px;
+        font-weight: 400;
+    }
+
+    .ll-intro a {
+        color: #0A3254;
+        text-decoration: underline;
+        font-weight: 700;
+    }
+
+    .ll-intro a:hover {
+        color: #062139;
+        text-decoration: underline;
+    }
+
+    .ll-header-content {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .ll-logo {
+        width: 120px;
+        height: auto;
+    }
+
+    .ll-header-text {
+        flex: 1;
+    }
+
+    .ll-search-filter-section {
+        background: white;
+        padding: 25px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .ll-search-bar {
+        width: 100%;
+        padding: 15px;
+        font-size: 16px;
+        border: 2px solid #ddd;
+        border-radius: 6px;
+        margin-bottom: 15px;
+        transition: border-color 0.3s;
+    }
+
+    .ll-search-bar:focus {
+        outline: none;
+        border-color: #0A3254;
+    }
+
+    .ll-filters {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .ll-filter-group {
+        flex: 1;
+        min-width: 200px;
+    }
+
+    .ll-filter-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 500;
+        color: #555;
+    }
+
+    .ll-filter-group select {
+        width: 100%;
+        padding: 10px;
+        border: 2px solid #ddd;
+        border-radius: 6px;
+        font-size: 14px;
+        background: white;
+        cursor: pointer;
+    }
+
+    .ll-items-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 25px;
+        margin-bottom: 40px;
+    }
+
+    .ll-item-card {
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        transition: transform 0.2s, box-shadow 0.2s;
+        cursor: pointer;
+    }
+
+    .ll-item-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .ll-item-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        background-color: #f0f0f0;
+    }
+
+    .ll-item-content {
+        padding: 20px;
+    }
+
+    .ll-item-name {
+        font-size: 1.3em;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 8px;
+    }
+
+    .ll-category-badge {
+        display: inline-block;
+        background-color: #0A3254;
+        color: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.85em;
+        margin-bottom: 10px;
+    }
+
+    .ll-item-description {
+        color: #666;
+        font-size: 0.95em;
+        margin-bottom: 12px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .ll-item-location {
+        color: #888;
+        font-size: 0.9em;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .ll-location-icon {
+        width: 16px;
+        height: 16px;
+    }
+
+    .ll-loading {
+        text-align: center;
+        padding: 60px 20px;
+        color: #666;
+        font-size: 1.2em;
+    }
+
+    .ll-no-results {
+        text-align: center;
+        padding: 60px 20px;
+        color: #666;
+    }
+
+    .ll-no-results h2 {
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .ll-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+        z-index: 1000;
+        overflow-y: auto;
+    }
+
+    .ll-modal.active {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .ll-modal-content {
+        background: white;
+        border-radius: 12px;
+        max-width: 800px;
+        width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
+        position: relative;
+    }
+
+    .ll-close-modal {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: none;
+        border: none;
+        font-size: 32px;
+        cursor: pointer;
+        color: #666;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: background-color 0.2s;
+        z-index: 1;
+    }
+
+    .ll-close-modal:hover {
+        background-color: #f0f0f0;
+        color: #333;
+    }
+
+    .ll-modal-image {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        background-color: #f0f0f0;
+    }
+
+    .ll-modal-body {
+        padding: 30px;
+    }
+
+    .ll-modal-title {
+        color: #333;
+        font-size: 2em;
+        margin-bottom: 15px;
+    }
+
+    .ll-modal-description {
+        color: #555;
+        font-size: 1.1em;
+        line-height: 1.6;
+        margin: 20px 0;
+    }
+
+    .ll-modal-section {
+        margin: 25px 0;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+    }
+
+    .ll-modal-section h3 {
+        color: #0A3254;
+        margin-bottom: 10px;
+        font-size: 1.2em;
+    }
+
+    .ll-modal-section p {
+        color: #555;
+        line-height: 1.6;
+        margin: 0;
+    }
+
+    .ll-modal-section a {
+        color: #0A3254;
+        text-decoration: underline;
+    }
+
+    .ll-request-button {
+        background-color: #0A3254;
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        font-size: 1.1em;
+        border-radius: 8px;
+        cursor: pointer;
+        width: 100%;
+        margin-top: 20px;
+        transition: background-color 0.2s;
+        font-weight: 600;
+    }
+
+    .ll-request-button:hover {
+        background-color: #062139;
+    }
+
+    .ll-verification-modal .ll-modal-content {
+        max-width: 500px;
+    }
+
+    .ll-verification-form {
+        padding: 30px;
+    }
+
+    .ll-verification-form h2 {
+        color: #0A3254;
+        margin-bottom: 15px;
+    }
+
+    .ll-verification-form p {
+        color: #555;
+        margin-bottom: 20px;
+        line-height: 1.6;
+    }
+
+    .ll-verification-form input {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        border: 2px solid #ddd;
+        border-radius: 6px;
+        margin-bottom: 15px;
+        box-sizing: border-box;
+    }
+
+    .ll-verification-form input:focus {
+        outline: none;
+        border-color: #0A3254;
+    }
+
+    .ll-verification-buttons {
+        display: flex;
+        gap: 10px;
+    }
+
+    .ll-verify-button, .ll-cancel-button {
+        flex: 1;
+        padding: 12px 20px;
+        font-size: 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        border: none;
+        transition: all 0.2s;
+    }
+
+    .ll-verify-button {
+        background-color: #0A3254;
+        color: white;
+    }
+
+    .ll-verify-button:hover {
+        background-color: #062139;
+    }
+
+    .ll-verify-button:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
+
+    .ll-cancel-button {
+        background-color: #f0f0f0;
+        color: #333;
+    }
+
+    .ll-cancel-button:hover {
+        background-color: #e0e0e0;
+    }
+
+    .ll-verification-message {
+        padding: 12px;
+        border-radius: 6px;
+        margin-bottom: 15px;
+        font-weight: 500;
+    }
+
+    .ll-verification-message.error {
+        background-color: #fee;
+        color: #c33;
+        border: 1px solid #fcc;
+    }
+
+    .ll-verification-message.success {
+        background-color: #efe;
+        color: #3a3;
+        border: 1px solid #cfc;
+    }
+
+    @media (max-width: 768px) {
+        .ll-items-grid {
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        }
+        
+        .ll-h1 {
+            font-size: 2em;
+        }
+        
+        .ll-modal-content {
+            margin: 10px;
+        }
+    }
+</style>
+
+<div class="ll-header">
+    <div class="ll-container">
+        <div class="ll-header-content">
+            <img src="https://www.delraycitizen.org/wp-content/uploads/2023/10/cropped-Logo-2023-2.png" alt="DRCA Logo" class="ll-logo">
+            <div class="ll-header-text">
+                <h1 class="ll-h1">Del Ray Lending Library</h1>
+                <p class="ll-tagline">Share more. Buy less. Connect better.</p>
+            </div>
+        </div>
+        <p class="ll-intro">Part of the DRCA's mission is to bring neighbors together, and we can't think of a better way than helping neighbors share and lend what they have to one another. Our lending library helps Del Ray residents buy less, get more use out of what we own, and strengthen the bonds that make our community so special. Browse available items below, or <a href="https://forms.gle/gW78HfbavvZQK5Yv7" target="_blank">add your own items</a> to share with neighbors. <a href="https://docs.google.com/document/d/1y5GIyUJAD4yWgAh-Gdq3OnxDkCHakVx60X9jksWfXTc/edit?usp=sharing" target="_blank">Access the project rules and FAQ here.</a> Questions? Email <a href="mailto:lendinglibrary@delraycitizen.org">lendinglibrary@delraycitizen.org</a></p>
+    </div>
+</div>
+
+<div class="ll-container">
+    <div class="ll-search-filter-section">
+        <input 
+            type="text" 
+            class="ll-search-bar" 
+            id="llSearchInput" 
+            placeholder="What do you need? (e.g., ladder, camping gear, pressure washer)"
+        >
+        
+        <div class="ll-filters">
+            <div class="ll-filter-group">
+                <label for="llCategoryFilter">Category</label>
+                <select id="llCategoryFilter">
+                    <option value="">All Categories</option>
+                    <option value="Tools, Ladders & Equipment">Tools, Ladders & Equipment</option>
+                    <option value="Yard & Garden">Yard & Garden</option>
+                    <option value="Camping & Outdoor">Camping & Outdoor</option>
+                    <option value="Party & Events">Party & Events</option>
+                    <option value="Home & Cleaning">Home & Cleaning</option>
+                    <option value="Kids & Pets">Kids & Pets</option>
+                    <option value="Sports & Recreation">Sports & Recreation</option>
+                    <option value="Hobbies & Crafts">Hobbies & Crafts</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div id="llItemsContainer" class="ll-items-grid">
+        <div class="ll-loading">Loading items from the lending library...</div>
+    </div>
+</div>
+
+<!-- Item Detail Modal -->
+<div id="llItemModal" class="ll-modal">
+    <div class="ll-modal-content">
+        <button class="ll-close-modal" onclick="llCloseModal()">&times;</button>
+        <img id="llModalImage" class="ll-modal-image" src="" alt="">
+        <div class="ll-modal-body">
+            <h2 id="llModalTitle" class="ll-modal-title"></h2>
+            <span id="llModalCategory" class="ll-category-badge"></span>
+            <p id="llModalDescription" class="ll-modal-description"></p>
+            
+            <div class="ll-modal-section" id="llProductLinkSection" style="display: none;">
+                <h3>Product Information</h3>
+                <p><a id="llModalProductLink" href="" target="_blank">View detailed specs online</a></p>
+            </div>
+            
+            <div class="ll-modal-section" id="llNotesSection" style="display: none;">
+                <h3>Notes & Instructions</h3>
+                <p id="llModalNotes"></p>
+            </div>
+            
+            <div class="ll-modal-section">
+                <h3>Location</h3>
+                <p id="llModalLocation"></p>
+            </div>
+            
+            <button class="ll-request-button" onclick="llRequestItem()">Request This Item</button>
+        </div>
+    </div>
+</div>
+
+<!-- Email Verification Modal -->
+<div id="llVerificationModal" class="ll-modal ll-verification-modal">
+    <div class="ll-modal-content">
+        <button class="ll-close-modal" onclick="llCloseVerificationModal()">&times;</button>
+        <div class="ll-verification-form">
+            <h2>Verify You're a Lender</h2>
+            <p>To borrow from the lending library, you must also be sharing at least one item. Please enter your email address to verify.</p>
+            <div id="llVerificationMessage"></div>
+            <input 
+                type="email" 
+                id="llVerificationEmail" 
+                placeholder="your.email@example.com"
+                autocomplete="email"
+            >
+            <div class="ll-verification-buttons">
+                <button class="ll-cancel-button" onclick="llCloseVerificationModal()">Cancel</button>
+                <button class="ll-verify-button" onclick="llVerifyAndProceed()" id="llVerifyButton">Verify & Continue</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // Google Sheet ID and GID
+        const SHEET_ID = '1psqVu7RcHRBlLoqgICNRzZeNm7lMA3WoMtpfJDKBQns';
+        const GID = '1295438652';
+        
+        let llAllItems = [];
+        let llCurrentItem = null;
+
+        async function llFetchItems() {
+            try {
+                const url = 'https://script.google.com/macros/s/AKfycbxNu-Rj8bJARt0C6AhLydoFyy_VV_Zx9wxrvfbvjCp0b9Pny5ZUlVuDxFgZy63EEA-2Ww/exec';
+                const response = await fetch(url);
+                const rawItems = await response.json();
+                
+                // Clean up category names - extract just the part before any parentheses
+                llAllItems = rawItems.map(item => ({
+                    ...item,
+                    category: item.category ? item.category.split('(')[0].trim() : item.category
+                })).filter(item => item.itemName);
+
+                llDisplayItems(llAllItems);
+            } catch (error) {
+                console.error('Error fetching items:', error);
+                document.getElementById('llItemsContainer').innerHTML = `
+                    <div class="ll-no-results">
+                        <h2>Unable to load items</h2>
+                        <p>Please try refreshing the page. Error: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        function llGetImageUrl(photoUrl) {
+            // If no photo URL or it's empty, return a simple placeholder
+            if (!photoUrl || photoUrl.trim() === '') {
+                return 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="200" viewBox="0 0 300 200"%3E%3Crect width="300" height="200" fill="%23f0f0f0"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="%23999"%3ENo Image%3C/text%3E%3C/svg%3E';
+            }
+            return photoUrl;
+        }
+
+        function llDisplayItems(items) {
+            const container = document.getElementById('llItemsContainer');
+            
+            if (items.length === 0) {
+                container.innerHTML = `
+                    <div class="ll-no-results">
+                        <h2>No items found</h2>
+                        <p>Try adjusting your search or filters.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = items.map(item => `
+                <div class="ll-item-card" onclick='llOpenModal(${JSON.stringify(item).replace(/'/g, "&#39;")})'>
+                    <img class="ll-item-image" src="${llGetImageUrl(item.photoUrl)}" 
+                         alt="${item.itemName}"
+                         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22300%22 height=%22200%22 viewBox=%220 0 300 200%22%3E%3Crect width=%22300%22 height=%22200%22 fill=%22%23f0f0f0%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22Arial, sans-serif%22 font-size=%2218%22 fill=%22%23999%22%3ENo Image%3C/text%3E%3C/svg%3E'">
+                    <div class="ll-item-content">
+                        <h3 class="ll-item-name">${item.itemName}</h3>
+                        <span class="ll-category-badge">${item.category}</span>
+                        <p class="ll-item-description">${item.description}</p>
+                        <div class="ll-item-location">
+                            <svg class="ll-location-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            <span>${item.landmark}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function llFilterItems() {
+            const searchTerm = document.getElementById('llSearchInput').value.toLowerCase();
+            const categoryFilter = document.getElementById('llCategoryFilter').value;
+
+            const filtered = llAllItems.filter(item => {
+                const matchesSearch = !searchTerm || 
+                    item.itemName.toLowerCase().includes(searchTerm) ||
+                    item.description.toLowerCase().includes(searchTerm) ||
+                    item.notes.toLowerCase().includes(searchTerm);
+                
+                const matchesCategory = !categoryFilter || item.category === categoryFilter;
+
+                return matchesSearch && matchesCategory;
+            });
+
+            llDisplayItems(filtered);
+        }
+
+        window.llOpenModal = function(item) {
+            llCurrentItem = item;
+            
+            document.getElementById('llModalImage').src = llGetImageUrl(item.photoUrl);
+            document.getElementById('llModalTitle').textContent = item.itemName;
+            document.getElementById('llModalCategory').textContent = item.category;
+            document.getElementById('llModalDescription').textContent = item.description;
+            document.getElementById('llModalLocation').textContent = item.landmark;
+            
+            if (item.productLink) {
+                document.getElementById('llProductLinkSection').style.display = 'block';
+                document.getElementById('llModalProductLink').href = item.productLink;
+            } else {
+                document.getElementById('llProductLinkSection').style.display = 'none';
+            }
+            
+            if (item.notes) {
+                document.getElementById('llNotesSection').style.display = 'block';
+                document.getElementById('llModalNotes').textContent = item.notes;
+            } else {
+                document.getElementById('llNotesSection').style.display = 'none';
+            }
+            
+            document.getElementById('llItemModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        window.llCloseModal = function() {
+            document.getElementById('llItemModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        window.llRequestItem = function() {
+            // Close the item detail modal
+            llCloseModal();
+            
+            // Open the verification modal
+            document.getElementById('llVerificationModal').classList.add('active');
+            document.getElementById('llVerificationEmail').value = '';
+            document.getElementById('llVerificationMessage').innerHTML = '';
+            document.body.style.overflow = 'hidden';
+        }
+
+        window.llCloseVerificationModal = function() {
+            document.getElementById('llVerificationModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        window.llVerifyAndProceed = async function() {
+            const emailInput = document.getElementById('llVerificationEmail');
+            const email = emailInput.value.trim().toLowerCase();
+            const messageDiv = document.getElementById('llVerificationMessage');
+            const verifyButton = document.getElementById('llVerifyButton');
+            
+            // Basic email validation
+            if (!email || !email.includes('@')) {
+                messageDiv.innerHTML = '<div class="ll-verification-message error">Please enter a valid email address.</div>';
+                return;
+            }
+            
+            // Disable button and show loading state
+            verifyButton.disabled = true;
+            verifyButton.textContent = 'Verifying...';
+            messageDiv.innerHTML = '';
+            
+            try {
+                // Check if this email is associated with any items in the lending library
+                const lenderItems = llAllItems.filter(item => 
+                    item.lenderEmail && item.lenderEmail.toLowerCase().trim() === email
+                );
+                
+                if (lenderItems.length > 0) {
+                    // Email is verified as a lender - proceed to the request form
+                    messageDiv.innerHTML = '<div class="ll-verification-message success">Verified! Opening request form...</div>';
+                    
+                    setTimeout(() => {
+                        // Pre-fill the Google Form with the item name and verified email
+                        const itemName = encodeURIComponent(llCurrentItem.itemName);
+                        const borrowerEmail = encodeURIComponent(email);
+                        const formUrl = `https://docs.google.com/forms/d/e/1FAIpQLSdfHP0S5pFMlWqcNYECkiBVyX96JcMcei0RKWh4Jbpu7HKXwQ/viewform?usp=pp_url&entry.1496792787=${itemName}&entry.706335965=${borrowerEmail}`;
+                        
+                        // Open the form in a new tab
+                        window.open(formUrl, '_blank');
+                        
+                        // Close the verification modal
+                        llCloseVerificationModal();
+                        
+                        // Reset button state
+                        verifyButton.disabled = false;
+                        verifyButton.textContent = 'Verify & Continue';
+                    }, 1000);
+                } else {
+                    // Email not found as a lender
+                    messageDiv.innerHTML = `
+                        <div class="ll-verification-message error">
+                            We couldn't find any items associated with this email address. 
+                            To borrow from the library, you must first 
+                            <a href="https://forms.gle/gW78HfbavvZQK5Yv7" target="_blank" style="color: #c33; text-decoration: underline;">add at least one item to lend</a>.
+                        </div>
+                    `;
+                    verifyButton.disabled = false;
+                    verifyButton.textContent = 'Verify & Continue';
+                }
+            } catch (error) {
+                console.error('Error verifying email:', error);
+                messageDiv.innerHTML = '<div class="ll-verification-message error">An error occurred. Please try again.</div>';
+                verifyButton.disabled = false;
+                verifyButton.textContent = 'Verify & Continue';
+            }
+        }
+
+        // Close modals when clicking outside
+        document.getElementById('llItemModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                llCloseModal();
+            }
+        });
+
+        document.getElementById('llVerificationModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                llCloseVerificationModal();
+            }
+        });
+
+        // Allow Enter key to submit verification
+        document.getElementById('llVerificationEmail').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                llVerifyAndProceed();
+            }
+        });
+
+        // Set up event listeners
+        document.getElementById('llSearchInput').addEventListener('input', llFilterItems);
+        document.getElementById('llCategoryFilter').addEventListener('change', llFilterItems);
+
+        // Initial load
+        llFetchItems();
+    })();
+</script>
